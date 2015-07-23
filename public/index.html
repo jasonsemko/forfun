@@ -11,7 +11,20 @@
     <body>
 
         <h1>Hello World</h1>
+        <div id='orders-list'>
 
-        <script src="assets/js/global.js"></script>
+        </div>
+        <!-- <div id="parent">
+            <div class="children">Hello</div>
+        </div> -->
+
+        <script src="assets/js/vendor/requirejs/require.js"></script>
+        <script type="text/javascript">
+          requirejs.config({
+            baseUrl: 'assets/js'
+          });
+
+          requirejs(['global','load-orders']);
+        </script>
     </body>
 </html>

@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['src/js/*.js'],
-        tasks: ['jshint'],
+        tasks: ['jshint','copy'],
       },
       scss: {
         files: ['src/scss/*.scss'],
@@ -31,9 +31,24 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'src/js',
-          src: ['*.js'],
+          src: ['**/*.js'],
           dest: 'public/assets/js/'
         }]
+      }
+    },
+    jshint: {
+      options: {
+        curly: true,
+        eqeqeq: true,
+        eqnull: true,
+        browser: true,
+        ignores: ['src/js/vendor/requirejs/require.js']
+      },
+      files: {
+        expand: true,
+        cwd: 'src/js',
+        src: ['**/*.js'],
+        dest: 'public/assets/js'
       }
     }
   });
@@ -41,7 +56,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('default', ['sass','copy']);
+  grunt.registerTask('default', ['sass','jshint', 'copy']);
 
 };
