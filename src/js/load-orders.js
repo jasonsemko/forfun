@@ -40,8 +40,14 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
       var html = '<ul>';
       ordersObj = JSON.parse(this.responseText);
 
+      ordersObj = ordersObj.filter(function(order) {
+        return order.quantity !== 0;
+      });
+
+      orderCount = ordersObj.length;
+
       ordersObj.forEach(function(el, index) {
-        html += '<li data-index="' + index + '" data-modal-target="order" class="order-listener">';
+        html += '<li data-index="' + index + '" data-id="' + el.id + '" class="order-listener">';
         html +=  el.first_name + ' ' + el.last_name + ' | ' + el.street_address;
         html += '</li>';
       });
@@ -49,6 +55,7 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
       html += '</ul>';
       document.getElementById('orders-list').innerHTML = html;
 
+      updateOrderCount();
       addOrderEventListeners();
     };
 
@@ -62,12 +69,15 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
    * the injected HTML to be injected into the DOM (in a modal)
    */
   function addOrderEventListeners() {
-    var orders = document.querySelectorAll('.order-listener');
+    var orders = document.querySelectorAll('.order-listener'), template;
 
     Array.prototype.forEach.call(orders, function(el) {
       el.addEventListener('click', function(){
-        var template = generateOrderTemplate(parseInt(el.getAttribute('data-index')));
-        //TODO - Modals.loadModal(template);
+
+        template = generateOrderTemplate(parseInt(el.getAttribute('data-index')));
+        Modals.loadModal(template);
+        addRemoveOrderListener();
+
       }, false);
     });
   }
@@ -81,7 +91,7 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
   function generateOrderTemplate(index) {
 
     var template = ModalTemplates.getTemplateById('order'),
-        currentOrder = ordersObj[parseInt(index),
+        currentOrder = ordersObj[parseInt(index)],
         regex, prop;
 
     for(prop in currentOrder) {
@@ -90,6 +100,34 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
     }
 
     return template;
+  }
+
+  /**
+   * Add the "Remove Order" listener
+   */
+  function addRemoveOrderListener() {
+    var removeOrderBtn = document.getElementById('remove-order');
+    removeOrderBtn.addEventListener('click', removeOrder, true);
+  }
+
+  /**
+   * Remove an order
+   * @param  {Event} event The event
+   */
+  function removeOrder(event) {
+    var id = document.getElementById('order-overlay').getAttribute('data-id');
+    var el = document.querySelector('#orders-list li[data-id="'+id+'"]');
+    el.parentNode.removeChild(el);
+    orderCount--;
+    updateOrderCount();
+    Modals.destroyModal(true);
+  }
+
+  /**
+   * Update the current order count
+   */
+  function updateOrderCount() {
+    orderCountElement.textContent = orderCount;
   }
 
   init();

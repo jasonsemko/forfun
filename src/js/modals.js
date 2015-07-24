@@ -14,10 +14,51 @@ define(function() {
   function loadModal(template) {
     injectModal(template);
     showModal();
+    addModalEventListeners();
   }
 
-  function injectModal(template) {}
-  function showModal() {}
+  /**
+   * Injects HTML template into the modal-content container
+   * @param  {String} template The HTML template to be used
+   */
+  function injectModal(template) {
+    modalInner.innerHTML = template;
+  }
+
+  /**
+   * Display the modal to the client
+   */
+  function showModal() {
+    modalOuter.style.display = 'block';
+  }
+
+  /**
+   * Adds modal event listeners
+   *
+   * Clicking outside of Modal.
+   * Clicking the close button.
+   */
+  function addModalEventListeners() {
+    modalOuter.removeEventListener('click', destroyModal);
+    modalOuter.addEventListener('click', destroyModal, true);
+
+    closeModal.removeEventListener('click', destroyModal);
+    closeModal.addEventListener('click', destroyModal);
+  }
+
+  /**
+   * Removes all HTML inside of Modal and hides it.
+   * @return {Node | Boolean} [description]
+   */
+  function destroyModal(element) {
+
+    var targetId = element.target ? element.target.id : element;
+
+    if(/modal-container-outer|modal-close/.test(targetId) || targetId === true) {
+      modalOuter.style.display = 'none';
+      modalInner.innerHTML = '';
+    }
+  }
 
   return {
     loadModal: loadModal,
