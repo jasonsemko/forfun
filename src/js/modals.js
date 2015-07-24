@@ -3,11 +3,16 @@
  */
 define(function() {
 
-  //Load moda (main)
+  var modalOuter = document.getElementById('modal-container-outer'),
+      modalInner = document.getElementById('modal-content'),
+      closeModal = document.getElementById('modal-close');
+
+  /**
+   * Main method for loading up a modal, injecting it into the page.
+   * @param  {String} template The HTML template to be used
+   */
   function loadModal(template) {
-    //Inject modal template into modal div
     injectModal(template);
-    //Show Modal
     showModal();
   }
 
@@ -15,7 +20,8 @@ define(function() {
   function showModal() {}
 
   return {
-    loadModal: loadModal
+    loadModal: loadModal,
+    destroyModal: destroyModal
   };
 
 });

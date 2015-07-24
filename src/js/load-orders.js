@@ -5,9 +5,21 @@
 define(['modals','modal-templates'], function(Modals, ModalTemplates) {
 
   /**
-   * ordersObj - JSON parsed object of current orders
+   * JSON parsed order object
    */
-  var ordersObj;
+  var ordersObj,
+
+  /**
+   * Cahced number of orders currently visible
+   * @type {Number}
+   */
+      orderCount = 0,
+
+  /**
+   * DOM element used to display current order count
+   * @param  {[type]} 'order-count' [description]
+   */
+      orderCountElement = document.getElementById('order-count');
 
   /**
    * Initializes the load-orders module
@@ -64,7 +76,7 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
    * Puts a handle bar style string together with an object and replaces the
    * placeholders with real values.
    * @param  The index in the orders object to inject //TODO Don't use index just send the object.
-   * @return //TODO return the template
+   * @return The HTML template to be injected into DOM
    */
   function generateOrderTemplate(index) {
 
@@ -77,14 +89,12 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
       template = template.replace(regex, currentOrder[prop]);
     }
 
-    console.log(template); //Matt, this was the last thing I did. Logged out the template with the injected values, next step it putting it into a modal and showing it.
     return template;
   }
 
   init();
 
   return {
-    loadOrders: loadOrders,
-    getOrdersObj: getOrdersObj
+    loadOrders: loadOrders
   };
 });

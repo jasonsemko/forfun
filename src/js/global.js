@@ -5,9 +5,7 @@ require(['modals'], function(Modals) {
   //however, if in the future this project would need to be expanded up, global logic/
   //could go here.
 
-  var init = function() {
-    //Modals.addModalEventListeners();
-  };
+  var init = function() {};
 
   init();
 
