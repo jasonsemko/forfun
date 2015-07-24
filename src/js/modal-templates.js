@@ -9,7 +9,24 @@ define(function(){
     base: '',
 
     //Template for seeing an order in more detail
-    order: '<h1>{{city}}</h1>{{phone_number}}....{{sku}}'
+    order: '<ul id="order-overlay" data-id="{{id}}">' +
+            '<li>{{city}}</li>' +
+            '<li>{{created_at}}</li>' +
+            '<li>{{delivery_date}}</li>' +
+            '<li>{{email}}</li>' +
+            '<li>{{first_name}}</li>' +
+            '<li>{{id}}</li>' +
+            '<li>{{last_name}}</li>' +
+            '<li>{{phone_number}}</li>' +
+            '<li>{{quantity}}</li>' +
+            '<li>{{sku}}</li>' +
+            '<li>{{state}}</li>' +
+            '<li>{{street_address}}</li>' +
+            '<li>{{valid}}</li>' +
+            '<li>{{validated_by}}</li>' +
+            '<li>{{zipcode}}</li>' +
+            '</ul>' +
+            '<p id="remove-order">Remove Item</p>'
 
   };
 
