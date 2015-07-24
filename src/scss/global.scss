@@ -2,18 +2,22 @@ h1 {
   color: red;
 }
 
-// html, body { height: 100%; }
-// #parent {
-//     height: 100%;
-//     background-color: red;
-//     width: 100%;
-// }
-// .children{
-// 	background: #ffdb4c;
-// 	height: 300px;
-// 	position: relative;
-// 	top: 50%;
-// 	transform: translateY(-50%);
-//   width: 50%;
-//   margin: 0 auto;
-// }
+html, body { height: 100%; }
+#modal-container-outer {
+  background-color: rgba(0,0,0,0.8);
+  display: none;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+#modal-container {
+	background: #ffdb4c;
+  margin: 0 auto;
+  padding: 20px;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+  width: 50%;
+}
