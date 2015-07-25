@@ -5,7 +5,8 @@ define(function() {
 
   var modalOuter = document.getElementById('modal-container-outer'),
       modalInner = document.getElementById('modal-content'),
-      closeModal = document.getElementById('modal-close');
+      closeModal = document.getElementById('modal-close-btn'),
+      isModalOpen = false;
 
   /**
    * Main method for loading up a modal, injecting it into the page.
@@ -15,6 +16,7 @@ define(function() {
     injectModal(template);
     showModal();
     addModalEventListeners();
+    isModalOpen = true;
   }
 
   /**
@@ -42,7 +44,7 @@ define(function() {
     modalOuter.removeEventListener('click', destroyModal);
     modalOuter.addEventListener('click', destroyModal, true);
 
-    closeModal.removeEventListener('click', destroyModal);
+    closeModal.removeEventListener('click', destroyModal, false);
     closeModal.addEventListener('click', destroyModal);
   }
 
@@ -54,15 +56,25 @@ define(function() {
 
     var targetId = element.target ? element.target.id : element;
 
-    if(/modal-container-outer|modal-close/.test(targetId) || targetId === true) {
+    if(/modal-container-outer|modal-close-btn/.test(targetId) || targetId === true) {
       modalOuter.style.display = 'none';
       modalInner.innerHTML = '';
+      isModalOpen = false;
     }
+  }
+
+  /**
+   * Returns true or false dependent upon modal being open
+   * @return {Boolean} [description]
+   */
+  function isOpen() {
+    return isModalOpen;
   }
 
   return {
     loadModal: loadModal,
-    destroyModal: destroyModal
+    destroyModal: destroyModal,
+    isOpen: isOpen
   };
 
 });

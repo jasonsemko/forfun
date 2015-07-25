@@ -9,25 +9,21 @@ define(function(){
     base: '',
 
     //Template for seeing an order in more detail
-    order: '<ul id="order-overlay" data-id="{{id}}">' +
-            '<li>{{city}}</li>' +
-            '<li>{{created_at}}</li>' +
-            '<li>{{delivery_date}}</li>' +
-            '<li>{{email}}</li>' +
-            '<li>{{first_name}}</li>' +
-            '<li>{{id}}</li>' +
-            '<li>{{last_name}}</li>' +
-            '<li>{{phone_number}}</li>' +
-            '<li>{{quantity}}</li>' +
-            '<li>{{sku}}</li>' +
-            '<li>{{state}}</li>' +
-            '<li>{{street_address}}</li>' +
-            '<li>{{valid}}</li>' +
-            '<li>{{validated_by}}</li>' +
-            '<li>{{zipcode}}</li>' +
-            '</ul>' +
-            '<p id="remove-order">Remove Item</p>'
-
+    order: '<p id="modal-title">Order ID: {{id}}' +
+            '<hr>' +
+            '<div class="info-section">' +
+            '<h2>Personal Information</h2>' +
+            '<p>{{first_name}} {{last_name}}</p>' +
+            '<p>{{street_address}}<br>{{city}}, {{state}} {{zipcode}}</p>' +
+            '<p>{{email}}</p>' +
+            '<p>{{phone_number}}</p></div>' +
+            '<div class="info-section order-info">' +
+            '<h2>Order Information</h2>' +
+            '<p>Created at: {{created_at}}</p>' +
+            '<p>Delivery date: {{delivery_date}}</p>' +
+            '<p>Quantity: {{quantity}}</p>' +
+            '<p>SKU: {{sku}}</p></div>' +
+            '<div class="remove-order-container"><p id="remove-order" data-id={{id}}>Remove Item</p></div>'
   };
 
   /**

@@ -9,23 +9,35 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
    */
   var ordersObj,
 
-  /**
-   * Cahced number of orders currently visible
-   * @type {Number}
-   */
+      /**
+       * Cahced number of orders currently visible
+       * @type {Number}
+       */
       orderCount = 0,
 
-  /**
-   * DOM element used to display current order count
-   * @param  {[type]} 'order-count' [description]
-   */
-      orderCountElement = document.getElementById('order-count');
+      /**
+       * DOM element used to display current order count
+       * @param  {[type]} 'order-count' [description]
+       */
+      orderCountElement = document.getElementById('order-count'),
+      /**
+       * The previous order, used to compare new orders and if there is a change.
+       * @type {String}
+       */
+      previousOrder = "",
+
+      /**
+       * HTML template string
+       * @type {String}
+       */
+      html = "";
 
   /**
    * Initializes the load-orders module
    */
   function init() {
     loadOrders();
+    setInterval(loadOrders,30000); //Check every thirty seconds
   }
 
   /**
@@ -34,29 +46,49 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
    */
   function loadOrders() {
 
+    console.log("check for new orders");
     var orders = new XMLHttpRequest();
 
     orders.onload = function(data) {
-      var html = '<ul>';
-      ordersObj = JSON.parse(this.responseText);
 
-      ordersObj = ordersObj.filter(function(order) {
-        return order.quantity !== 0;
-      });
+      //As we cycle through this every minute, only proceed if the data is new.
+      if(previousOrder === "" || previousOrder !== this.responseText) {
 
-      orderCount = ordersObj.length;
+        // > 1 updates
+        if(previousOrder !== "") {
+            alert("Orders have been updated and will be reflected in your browser.");
+            if(Modals.isOpen) {
+              Modals.destroyModal(true);
+            }
+        }
 
-      ordersObj.forEach(function(el, index) {
-        html += '<li data-index="' + index + '" data-id="' + el.id + '" class="order-listener">';
-        html +=  el.first_name + ' ' + el.last_name + ' | ' + el.street_address;
-        html += '</li>';
-      });
+        previousOrder = this.responseText;
+        html = "<tr><th>Name<th>Address</tr>";
+        ordersObj = JSON.parse(this.responseText);
 
-      html += '</ul>';
-      document.getElementById('orders-list').innerHTML = html;
+        ordersObj = ordersObj.filter(function(order) {
+          return order.quantity !== 0;
+        });
 
-      updateOrderCount();
-      addOrderEventListeners();
+        //Readable
+        ordersObj.forEach(function(e,i) {
+          e.created_at = new Date(e.created_at).toLocaleDateString();
+          e.delivery_date = new Date(e.delivery_date).toLocaleDateString();
+        });
+
+        orderCount = ordersObj.length;
+
+        ordersObj.forEach(function(el, index) {
+          html += '<tr data-index="' + index + '" data-id="' + el.id + '" class="order-listener">';
+          html += '<td>' + el.first_name + ' ' + el.last_name + '<td>' + el.street_address;
+          html += '</tr>';
+        });
+
+        document.getElementById('orders-list').innerHTML = html;
+
+        updateOrderCount();
+        addOrderEventListeners();
+      }
     };
 
     orders.open('GET', 'http://soylent-challenge.herokuapp.com/orders/', true);
@@ -115,8 +147,8 @@ define(['modals','modal-templates'], function(Modals, ModalTemplates) {
    * @param  {Event} event The event
    */
   function removeOrder(event) {
-    var id = document.getElementById('order-overlay').getAttribute('data-id');
-    var el = document.querySelector('#orders-list li[data-id="'+id+'"]');
+    var id = document.getElementById('remove-order').getAttribute('data-id');
+    var el = document.querySelector('#orders-list tr[data-id="'+id+'"]');
     el.parentNode.removeChild(el);
     orderCount--;
     updateOrderCount();
