@@ -1,7 +1,136 @@
-h1 {
-  color: red;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+  font-family: Arial;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
+
+$tablet-width: 640px;
+$desktop-width: 960px;
+
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+html, body { height: 100%; }
+
+nav {
+  box-shadow: 0px 4px 6px -2px #CECECE;
+  padding: 15px 30px;
+  position: relative;
+  margin-bottom: 30px;
+  #logo {
+    background: transparent url(https://soylent-production-herokuapp-com.global.ssl.fastly.net/static/images/logo/logo_small.fb3db71b9863.svg) scroll no-repeat 0 0;
+    display: block;
+    height: 50px;
+    width: 100px;
+  }
+  #order-count {
+    background-color: #69CD3C;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: bold;
+    padding: 10px;
+    position: absolute;
+    right: 30px;
+    top: 20px;
+  }
+}
+
+#header-message {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+#orders-list {
+  margin: 0 auto;
+  tr {
+    color: #000;
+    cursor: pointer;
+    transition: 0.5s background-color, 0.5s color;
+    &:nth-child(2n) {
+      background-color: #ECECEC;
+    }
+    &:hover {
+      background-color: #69CD3C;
+      color: #FFF;
+    }
+    &:first-child {
+      background-color: #FFF;
+      color: #000;
+      cursor: auto;
+    }
+  }
+  td {
+    border-top: 2px solid black;
+    padding-top: 5px;
+    @include mobile {
+      font-size: 12px;
+    }
+    &:first-child {
+      padding: 0 100px 0 20px;
+      @include mobile {
+        padding-right: 30px;
+      }
+    }
+    &:last-child {
+      padding-right: 20px;
+    }
+  }
+}
+
+/**
+ * Modal Code
+ */
 html, body { height: 100%; }
 #modal-container-outer {
   background-color: rgba(0,0,0,0.8);
@@ -13,11 +142,71 @@ html, body { height: 100%; }
   width: 100%;
 }
 #modal-container {
-	background: #ffdb4c;
+	background: #FFF;
+  border: 5px solid #69CD3C;
+  border-radius: 15px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px 20px 20px;
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
-  width: 50%;
+  width: 75%;
+
+  @include mobile {
+    width: 80%;
+  }
+  &.load-orders {
+    #modal-title {
+      font-size: 30px;
+      font-weight: bold;
+
+      @include mobile {
+        font-size: 20px;
+      }
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    hr {
+      background-color: #69CD3C;
+      border: 0;
+      height: 2px;
+      margin-bottom: 20px;
+    }
+    .info-section {
+      display: inline-block;
+      margin-bottom: 30px;
+      vertical-align: top;
+      width: 45%;
+
+      @include mobile {
+        display: block;
+        width: 100%;
+      }
+    }
+    p {
+      margin-bottom: 10px;
+    }
+    #remove-order {
+      background-color: red;
+      color: #FFF;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 20px;
+      padding: 5px 10px;
+    }
+  }
+}
+#modal-close {
+  cursor: pointer;
+  height: 30px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  img {
+    width: 100%;
+  }
 }
